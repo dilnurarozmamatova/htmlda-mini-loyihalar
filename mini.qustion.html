@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<title>English Quiz Game</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: linear-gradient(180deg, #4facfe, #00f2fe);
+  text-align: center;
+  color: white;
+}
+
+.container {
+  width: 60%;
+  margin: auto;
+  margin-top: 50px;
+  background: rgba(0,0,0,0.3);
+  padding: 20px;
+  border-radius: 15px;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.option {
+  display: block;
+  margin: 10px;
+  background: white;
+  color: black;
+}
+
+#nextBtn {
+  background: #00ff99;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🎯 English Quiz Game</h1>
+
+<div class="container">
+  <h2 id="question">Start Game</h2>
+
+  <button class="option" onclick="check('A')" id="a">A</button>
+  <button class="option" onclick="check('B')" id="b">B</button>
+  <button class="option" onclick="check('C')" id="c">C</button>
+
+  <br>
+  <button id="nextBtn" onclick="next()">Next Question</button>
+
+  <h3 id="result"></h3>
+</div>
+
+<script>
+
+let level = 0;
+
+// SAVOLLAR (osondan qiyinga)
+const quiz = [
+  {
+    q: "What is 'Apple' in Uzbek?",
+    a: "Olma",
+    b: "Banan",
+    c: "Uzum",
+    correct: "A"
+  },
+  {
+    q: "What is 'Book' in Uzbek?",
+    a: "Kitob",
+    b: "Qalam",
+    c: "Daftar",
+    correct: "A"
+  },
+  {
+    q: "What is 'Car' in Uzbek?",
+    a: "Uy",
+    b: "Mashina",
+    c: "Oyna",
+    correct: "B"
+  },
+  {
+    q: "Translate: 'I am happy'",
+    a: "Men xafaman",
+    b: "Men baxtliman",
+    c: "Men charchadim",
+    correct: "B"
+  },
+  {
+    q: "Translate: 'Good morning'",
+    a: "Xayrli tun",
+    b: "Salom kech",
+    c: "Xayrli tong",
+    correct: "C"
+  },
+
+  // QIYINLASHIB BORADI
+  {
+    q: "What is 'Computer' in Uzbek?",
+    a: "Kompyuter",
+    b: "Telefon",
+    c: "Televizor",
+    correct: "A"
+  },
+  {
+    q: "Translate: 'I want to learn English'",
+    a: "Men ingliz tilini o‘rganmoqchiman",
+    b: "Men uxlamoqchiman",
+    c: "Men ovqat yemoqchiman",
+    correct: "A"
+  },
+  {
+    q: "What is 'Teacher' in Uzbek?",
+    a: "O‘qituvchi",
+    b: "Shifokor",
+    c: "Haydovchi",
+    correct: "A"
+  },
+  {
+    q: "Translate: 'She is my friend'",
+    a: "U mening dushmanim",
+    b: "U mening do‘stim",
+    c: "U mening onam",
+    correct: "B"
+  },
+  {
+    q: "Translate: 'I am learning English every day'",
+    a: "Men har kuni ingliz o‘rganaman",
+    b: "Men uxlayapman",
+    c: "Men futbol o‘ynayapman",
+    correct: "A"
+  }
+];
+
+let current = 0;
+
+function loadQuestion() {
+  let q = quiz[current];
+  document.getElementById("question").innerText = q.q;
+  document.getElementById("a").innerText = "A) " + q.a;
+  document.getElementById("b").innerText = "B) " + q.b;
+  document.getElementById("c").innerText = "C) " + q.c;
+  document.getElementById("result").innerText = "";
+}
+
+function check(ans) {
+  let q = quiz[current];
+
+  if (ans === q.correct) {
+    document.getElementById("result").innerText = "✅ To‘g‘ri!";
+  } else {
+    document.getElementById("result").innerText = "❌ Xato!";
+  }
+}
+
+function next() {
+  current++;
+  if (current >= quiz.length) {
+    current = 0;
+  }
+  loadQuestion();
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
