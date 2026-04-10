@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<title>Daily English Conversation</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+}
+
+.card {
+  background: rgba(0,0,0,0.3);
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 15px;
+}
+
+button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  background: #00ffcc;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.line {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+.uz {
+  opacity: 0.7;
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>🗣 Daily English Speaking</h1>
+  <button onclick="newConversation()">Yangi dialog</button>
+
+  <div id="chat" class="card"></div>
+</div>
+
+<script>
+
+const conversations = [
+[
+{en:"Hi! How are you?", uz:"Salom! Qalaysan?"},
+{en:"I'm good, thanks. And you?", uz:"Yaxshiman, rahmat. Senchi?"},
+{en:"I'm fine too.", uz:"Men ham yaxshiman."}
+],
+
+[
+{en:"What are you doing?", uz:"Nima qilyapsan?"},
+{en:"I'm studying English.", uz:"Men ingliz tili o‘rganyapman."},
+{en:"That's great!", uz:"Zo‘r ekan!"}
+],
+
+[
+{en:"Where are you from?", uz:"Qayerdansan?"},
+{en:"I'm from Uzbekistan.", uz:"Men O‘zbekistondanman."},
+{en:"Nice to meet you!", uz:"Tanishganimdan xursandman!"}
+],
+
+[
+{en:"What time is it?", uz:"Soat nechchi?"},
+{en:"It's 5 PM.", uz:"Soat 5."},
+{en:"Thanks!", uz:"Rahmat!"}
+],
+
+[
+{en:"Do you like coffee?", uz:"Sen kofeni yoqtirasanmi?"},
+{en:"Yes, I love it!", uz:"Ha, juda yaxshi ko‘raman!"},
+{en:"Me too!", uz:"Men ham!"}
+]
+];
+
+function newConversation() {
+  let chat = document.getElementById("chat");
+  let random = conversations[Math.floor(Math.random() * conversations.length)];
+
+  let html = "";
+
+  random.forEach(line => {
+    html += `
+      <div class="line">🇬🇧 ${line.en}</div>
+      <div class="uz">🇺🇿 ${line.uz}</div>
+    `;
+  });
+
+  chat.innerHTML = html;
+}
+
+// first load
+newConversation();
+
+</script>
+
+</body>
+</html>
