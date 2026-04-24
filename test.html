@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ibrat Style English Test (100 Daily Questions)</title>
+<style>
+body{font-family:Arial;background:#f4f4f4;padding:20px}
+.container{max-width:900px;margin:auto;background:white;padding:20px;border-radius:10px}
+button{padding:10px 15px;margin-top:15px;cursor:pointer;border:none;border-radius:8px;background:#2563eb;color:white}
+.timer{font-weight:bold;color:red;margin-bottom:10px}
+.question{margin-bottom:15px;padding:10px;border-bottom:1px solid #eee}
+label{display:block;margin-left:10px}
+</style>
+</head>
+<body>
+<div class="container">
+<h2>Ibrat Style Daily English Test (100 Questions)</h2>
+<div id="timer" class="timer">Time: 90:00</div>
+<div id="quiz"></div>
+<button onclick="submitTest()">Submit</button>
+<button onclick="showStats()">Show Progress</button>
+<div id="result"></div>
+</div>
+
+<script>
+let timeLeft=5400;
+let timer;
+
+function seed(){
+  let d=new Date();
+  return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+}
+
+function rng(str){
+  let s=str.split("").reduce((a,b)=>a+b.charCodeAt(0),0);
+  return function(n){
+    s=(s*9301+49297)%233280;
+    return s%n;
+  }
+}
+
+let questions=[];
+
+function generate(){
+  let r=rng(seed());
+
+  let bank=[
+    {q:"easy meaning?",a:"oson",o:["oson","qiyin","tez"]},
+    {q:"big meaning?",a:"katta",o:["katta","kichik","uzun"]},
+    {q:"She ___ to school every day.",a:"goes",o:["go","goes","going"]},
+    {q:"I am ___ a book.",a:"reading",o:["read","reading","reads"]},
+    {q:"Synonym of happy",a:"glad",o:["sad","glad","angry"]},
+    {q:"Opposite of hot",a:"cold",o:["cold","warm","boiling"]},
+    {q:"He ___ yesterday.",a:"went",o:["go","gone","went"]},
+    {q:"beautiful meaning?",a:"chiroyli",o:["chiroyli","yomon","katta"]},
+    {q:"I ___ hungry.",a:"am",o:["is","are","am"]},
+    {q:"Synonym of fast",a:"quick",o:["slow","quick","late"]},
+    {q:"water meaning?",a:"suv",o:["suv","olov","yer"]},
+    {q:"She has ___ finished.",a:"just",o:["just","yet","still"]},
+    {q:"car meaning?",a:"mashina",o:["uy","mashina","yo‘l"]},
+    {q:"He ___ playing.",a:"is",o:["is","are","be"]},
+    {q:"school meaning?",a:"maktab",o:["bozor","maktab","uy"]}
+  ];
+
+  while(bank.length<100){
+    let b=bank[r(bank.length)];
+    bank.push({...b});
+  }
+
+  for(let i=bank.length-1;i>0;i--){
+    let j=r(i+1);
+    [bank[i],bank[j]]=[bank[j],bank[i]];
+  }
+
+  bank=bank.slice(0,100);
+
+  let container=document.getElementById("quiz");
+  container.innerHTML="";
+  questions=[];
+
+  bank.forEach((q,i)=>{
+    let options=[...q.o];
+
+    for(let j=options.length-1;j>0;j--){
+      let k=r(j+1);
+      [options[j],options[k]]=[options[k],options[j]];
+    }
+
+    let ansIndex=options.indexOf(q.a);
+
+    questions.push({q:q.q,options:options,answer:ansIndex});
+
+    let div=document.createElement("div");
+    div.className="question";
+
+    div.innerHTML=`<p><b>${i+1}.</b> ${q.q}</p>`+
+    options.map((o,ii)=>`<label><input type='radio' name='q${i}' value='${ii}'> ${o}</label>`).join("");
+
+    container.appendChild(div);
+  });
+
+  startTimer();
+}
+
+function startTimer(){
+  timer=setInterval(()=>{
+    timeLeft--;
+    let m=Math.floor(timeLeft/60);
+    let s=timeLeft%60;
+    document.getElementById("timer").innerText=`Time: ${m}:${s<10?'0'+s:s}`;
+
+    if(timeLeft<=0){
+      clearInterval(timer);
+      submitTest();
+    }
+  },1000);
+}
+
+function submitTest(){
+  clearInterval(timer);
+  let score=0;
+  let review="<h3>Errors Review</h3>";
+
+  questions.forEach((q,i)=>{
+    let ans=document.querySelector(`input[name=q${i}]:checked`);
+    let user=ans?parseInt(ans.value):-1;
+
+    if(user===q.answer){
+      score++;
+    }else{
+      review+=`<p><b>${i+1}. ${q.q}</b><br>
+      Your answer: ${user>=0?q.options[user]:"No answer"}<br>
+      Correct: ${q.options[q.answer]}</p>`;
+    }
+  });
+
+  let percent=Math.round((score/100)*100);
+
+  document.getElementById("result").innerHTML=
+  `<h3>Score: ${score}/100 (${percent}%)</h3>`+review;
+
+  let d=JSON.parse(localStorage.getItem("scores")||"[]");
+  d.push(percent);
+  localStorage.setItem("scores",JSON.stringify(d));
+}
+
+function showStats(){
+  let d=JSON.parse(localStorage.getItem("scores")||"[]");
+  let avg=d.reduce((a,b)=>a+b,0)/(d.length||1);
+  alert("Average Score: "+avg.toFixed(2)+"%");
+}
+
+generate();
+</script>
+</body>
+</html>
