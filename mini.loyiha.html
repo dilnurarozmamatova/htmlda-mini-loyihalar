@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Study Planner</title>
+<style>
+body { font-family: Arial; background:#f0f4f8; margin:0; padding:20px; }
+.container { max-width:600px; margin:auto; background:white; padding:20px; border-radius:10px; }
+h1 { text-align:center; }
+input, button { padding:10px; margin:5px 0; width:100%; }
+ul { list-style:none; padding:0; }
+li { padding:10px; background:#e3e3e3; margin-top:5px; display:flex; justify-content:space-between; }
+.done { text-decoration: line-through; color:gray; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>📚 Smart Study Planner</h1>
+<input type="text" id="taskInput" placeholder="Enter your study task...">
+<button onclick="addTask()">Add Task</button>
+<ul id="taskList"></ul>
+</div>
+
+<script>
+function addTask() {
+  const input = document.getElementById('taskInput');
+  const taskText = input.value.trim();
+  if(taskText === '') return;
+
+  const li = document.createElement('li');
+  li.innerHTML = `<span onclick="toggleDone(this)">${taskText}</span> <button onclick="deleteTask(this)">❌</button>`;
+
+  document.getElementById('taskList').appendChild(li);
+  input.value = '';
+}
+
+function toggleDone(element) {
+  element.classList.toggle('done');
+}
+
+function deleteTask(button) {
+  button.parentElement.remove();
+}
+</script>
+</body>
+</html>
