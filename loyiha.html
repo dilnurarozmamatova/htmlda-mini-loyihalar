@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drawing App</title>
+<style>
+body { margin:0; font-family: Arial; background:#222; color:white; text-align:center; }
+.toolbar { padding:10px; background:#333; }
+button, input { margin:5px; padding:8px; }
+canvas { background:white; display:block; margin:0 auto; cursor:crosshair; border-radius:10px; }
+</style>
+</head>
+<body>
+<div class="toolbar">
+<input type="color" id="color" value="#000000">
+<input type="range" id="size" min="1" max="20" value="5">
+<button onclick="clearCanvas()">Clear</button>
+</div>
+<canvas id="canvas" width="800" height="500"></canvas>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let drawing = false;
+
+canvas.addEventListener('mousedown', () => drawing = true);
+canvas.addEventListener('mouseup', () => drawing = false);
+canvas.addEventListener('mousemove', draw);
+
+function draw(e) {
+  if(!drawing) return;
+  const color = document.getElementById('color').value;
+  const size = document.getElementById('size').value;
+
+  ctx.lineWidth = size;
+  ctx.lineCap = 'round';
+  ctx.strokeStyle = color;
+
+  ctx.lineTo(e.offsetX, e.offsetY);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(e.offsetX, e.offsetY);
+}
+
+function clearCanvas() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+</script>
+</body>
+</html>
